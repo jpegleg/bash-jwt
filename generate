@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+jwt_header=$(echo -n '{"alg":"HS256","typ":"JWT"}' | base64 | sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
+
+arr=$(<payload.json)
+
+echo "setting load to $arr"
+
+payload=$(echo -n $arr | base64 | sed s/\+/-/g |sed 's/\//_/g' |  sed -E s/=+$//)
+
+secret=$1
+
+hexsecret=$(echo -n "$secret" | xxd -p | paste -sd "")
+
+echo "for jwt.io (base64) validation:"
+echo
+echo -n "$secret" | base64
+echo
+echo
+iosecret=$(echo -n "$secret" | base64)
+
+hmac_signature=$(echo -n "${jwt_header}.${payload}" |  openssl dgst -sha256 -mac HMAC -macopt hexkey:$hexsecret -binary | base64  | sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
+
+jwt="${jwt_header}.${payload}.${hmac_signature}"
+
+echo "generated jwt:"
+echo
+echo $jwt
