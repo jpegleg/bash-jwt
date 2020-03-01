@@ -1,5 +1,7 @@
 # bash-jwt
 HS256 JWT creation and validation in BASH with openssl
+
+
 (reminder: jwt HS256 is not encryption, it is identity/message validation with symmetric HMAC signing, the data in a jwt is easily decoded if an adversary gets the jwt, it is just base64 encoded, just base64 decode the first two sections to read the header and payload)
 
 # This is another code snippet for manual stuff, demo, proto, shell, generating and validating JSON web tokens
