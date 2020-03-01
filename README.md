@@ -3,7 +3,7 @@ HS256 JWT creation and validation in BASH with openssl
 
 # This is another code snippet for manual stuff, demo, proto, shell, generating and validating JSON web tokens
 #
-# You might take this as a starting place as you build out JWT in your backend prototype
+# You might take this as a starting place or validation control as you build out JWT in your backend prototype
 # use it for manual JWT stuff on the command line
 # or use it perhaps as a teaching or demonstrating tool for JWT education
 
