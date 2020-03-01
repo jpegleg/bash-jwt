@@ -1,6 +1,14 @@
 # bash-jwt
 HS256 JWT creation and validation in BASH
 
+$> cat payload.json
+
+{
+
+  "key": "value"
+  
+}
+
 
 $> ./jwt7.sh things
 
