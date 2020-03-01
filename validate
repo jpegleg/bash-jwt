@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+
+jwt=$1
+
+header=$(echo -n $1 | cut -d'.' -f1)
+echo $header as header
+payload=$(echo -n $1 | cut -d'.' -f2)
+echo $payload as payload
+signature=$(echo -n $1 | cut -d'.' -f3)
+echo $signature as signature
+
+secret=${2}
+#echo $secret as secret
+hexsecret=$(echo -n "$secret" | xxd -p | paste -sd "")
+#echo $hexsecret as hexsecret
+
+mysig=$( echo -n "${header}.${payload}" | openssl dgst -sha256 -mac HMAC -macopt hexkey:$hexsecret -binary | base64 |  sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
+
+comparejwt=$header.$payload.$mysig
+echo "we computed $mysig"
+echo "compare against signature:"
+
+echo
+
+if [ $mysig == $signature ]; then
+  echo passed
+else
+  echo failed
+fi
