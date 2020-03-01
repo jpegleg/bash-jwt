@@ -3,9 +3,13 @@ HS256 JWT creation and validation in BASH
 
 
 $> ./jwt7.sh things
+
 setting load to {
+
   "key": "value"
+  
 }
+
 for jwt.io (base64) validation:
 
 dGhpbmdz
