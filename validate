@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-
+# MIT license          #
+# JWT validate in bash #
+########################
 
 jwt=$1
 
@@ -24,7 +26,7 @@ echo "compare against signature:"
 echo
 
 if [ $mysig == $signature ]; then
-  echo passed
+  echo passed # && your API call goes here, etc
 else
-  echo failed
+  echo failed # just echo out failed, or make some security API call, etc
 fi
