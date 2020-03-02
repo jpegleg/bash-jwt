@@ -3,7 +3,7 @@
 # JWT validate in bash #
 ########################
 
-jwt=$1
+# jwt=$1 # pass in the jwt you want to validate in as the first argument to the script
 
 header=$(echo -n $1 | cut -d'.' -f1)
 echo $header as header
@@ -12,14 +12,12 @@ echo $payload as payload
 signature=$(echo -n $1 | cut -d'.' -f3)
 echo $signature as signature
 
-secret=${2}
-#echo $secret as secret
-hexsecret=$(echo -n "$secret" | xxd -p | paste -sd "")
-#echo $hexsecret as hexsecret
+secret=${2} # pass the HMAC secret as the second argument
+
+hexsecret=$(echo -n "$secret" | xxd -p | paste -sd "") # convert to serial hex, no pesky line breaks
 
 mysig=$( echo -n "${header}.${payload}" | openssl dgst -sha256 -mac HMAC -macopt hexkey:$hexsecret -binary | base64 |  sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
 
-comparejwt=$header.$payload.$mysig
 echo "we computed $mysig"
 echo "compare against signature:"
 
