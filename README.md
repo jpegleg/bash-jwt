@@ -11,7 +11,7 @@ Note for those of you who are new to this stuff: jwt HS256 is not encryption, it
 # or use it perhaps as a teaching or demonstrating tool for JWT education
 
 
-demo:
+# demo below (using a weak HMAC secret of just "things", in real world use 64 character string.)
 
 # pwd must contain payload.json as the jwt payload
 
