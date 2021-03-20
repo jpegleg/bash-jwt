@@ -4,7 +4,7 @@
 ########################
 
 # Secrets here must be Shares generated with Shamir's Secret Sharing Algorithm
-# See the shamir-shares-generate program included in this repo.
+# See the generate-jwt-using-2-shamir-shares program included in this repo.
 
 secret1=$1
 secret2=$2
