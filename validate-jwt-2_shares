@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# MIT license          #
+# JWT validate in bash #
+########################
+
+secret1=$2
+secret2=$3
+header=$(echo -n $1 | cut -d'.' -f1)
+echo $header as header
+payload=$(echo -n $1 | cut -d'.' -f2)
+echo $payload as payload
+signature=$(echo -n $1 | cut -d'.' -f3)
+echo $signature as signature
+
+secret=$(echo -e "$2\n$3" | ssss-combine -t 2 2>&1 | awk '{print $3}' | head -n1 | xxd -p | paste -sd "")
+
+hexsecret=$(echo -n "$secret" | xxd -p | paste -sd "") # convert to serial hex, no pesky line breaks
+
+mysig=$( echo -n "${header}.${payload}" | openssl dgst -sha256 -mac HMAC -macopt hexkey:$hexsecret -binary | base64 |  sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
+
+echo "we computed $mysig"
+echo "compare against signature:"
+
+echo
+
+if [ $mysig == $signature ]; then
+  echo passed # && your API call goes here, etc
+else
+  echo failed # just echo out failed, or make some security API call, etc
+fi
