@@ -1,0 +1,28 @@
+#!/usr/bin/env bash    
+# MIT license          #
+# JWT generate in bash #
+########################
+
+# Secrets here must be Shares generated with Shamir's Secret Sharing Algorithm
+# See the shamir-shares-generate program included in this repo.
+
+secret1=$1
+secret2=$2
+
+jwt_header=$(echo -n '{"alg":"HS256","typ":"JWT"}' | base64 | sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
+arr=$(<payload.json)
+payload=$(echo -n $arr | base64 | sed s/\+/-/g |sed 's/\//_/g' |  sed -E s/=+$//)
+hexsecret=$(echo -e "$1\n$2" | ssss-combine -t 2 2>&1 | awk '{print $3}' | head -n1 | xxd -p | paste -sd "")
+
+echo "for jwt.io (base64) validation:"
+echo
+echo -n "$secret" | base64
+echo
+echo
+
+hmac_signature=$(echo -n "${jwt_header}.${payload}" |  openssl dgst -sha256 -mac HMAC -macopt hexkey:$hexsecret -binary | base64  | sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
+jwt="${jwt_header}.${payload}.${hmac_signature}"
+
+echo "generated jwt:"
+echo
+echo $jwt
