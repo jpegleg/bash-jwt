@@ -61,3 +61,17 @@ compare against signature:
 
 passed
 
+# shamir's secret sharing algorithm for the HMAC secret has been added in some additional programs:
+
+generate-jwt_2-shares
+shamir-shares-generate
+validate-jwt-2_shares
+
+shamir-shares-generate creates an encrypted file containing 2000 shares, with a threshold of two shares required to unlock the secret.
+The arg passed to shamir-shares-generate is the password to the encrypted file containing the shares, not the vslue of the secret.
+The secret is randomly generated and not stored at all, only via the shares.
+
+
+generate-jwt_2-shares creates a jwt, taking two of the shares in as arg 1 and arg 2.
+
+validate-jwt-2_shares validates a jwt against any two shares of the same secret, taking three arguments. Arg 1 being the jwt to validate, arg 2 and 3 being any shares of the shamir's secret sharing secret.
